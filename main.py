@@ -26,17 +26,16 @@ response = client.models.generate_content(
     model='gemini-2.5-flash', contents=messages
 )
 
+
 metadata = response.usage_metadata
 if metadata is None:
     raise RuntimeError("The API request fail to fetch the response")
-print(
-    f"Prompt tokens: {metadata.prompt_token_count}\nResponse tokens: {metadata.candidates_token_count}"
-)
+if args.verbose:
+    print(
+        f"User prompt: {args.user_prompt}\nPrompt tokens: {metadata.prompt_token_count}\nResponse tokens: {metadata.candidates_token_count}"
+    )
 
 print(response.text)
-
-
-
 
 def main():
     print("Hello from agent!")
