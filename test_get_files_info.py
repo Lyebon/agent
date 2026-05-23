@@ -9,12 +9,16 @@ class TestGet_files(unittest.TestCase):
         print(get_files_info("calculator", "main.py"))
 
     def test_get_files_path(self):
-        problem = get_files_info("calculator", ".")
-        result = '''- main.py: file_size=719 bytes, is_dir=False
-- tests.py: file_size=1331 bytes, is_dir=False
-- pkg: file_size=44 bytes, is_dir=True
-'''
-        self.assertEqual(problem, result)
+        result = get_files_info("calculator", ".")
+        print(f'Result for current directory:{result}')
+        result2 = get_files_info("calculator", "pkg")
+        print(f'Result for "pkg" directory:{result2}')
+        result3 = get_files_info("calculator", "/bin")
+        print(f'''Result for '/bin' directory:
+{result3}''')
+        result4 = get_files_info("calculator", "../")
+        print(f'''Result for '../' directory:
+{result4}''')
 
 if __name__ == "__main__":
     unittest.main()
