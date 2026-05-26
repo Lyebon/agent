@@ -1,4 +1,4 @@
-from functions.get_files_info import get_files_info
+from functions.get_files_info import get_files_info, get_file_content
 import unittest
 
 class TestGet_files(unittest.TestCase):
@@ -19,6 +19,8 @@ class TestGet_files(unittest.TestCase):
         result4 = get_files_info("calculator", "../")
         print(f'''Result for '../' directory:
 {result4}''')
+
+
 
 if __name__ == "__main__":
     unittest.main()
