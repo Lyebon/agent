@@ -1,5 +1,6 @@
 import os
 import subprocess
+from agent.config import MAX_CHARS
 
 
 def get_files_info(working_directory: str, directory: str = ".") -> str:
@@ -56,9 +57,9 @@ def write_file(working_directory: str, file_path: str, content: str) -> str:
 
 def read_file(target_dir, file_path):
     with open(target_dir, "r") as f:
-        content = f.read(10000)
+        content = f.read(MAX_CHARS)
         if f.read(1):
-            content += f'[...File "{file_path}" truncated at {10000} characters]'
+            content += f'[...File "{file_path}" truncated at {MAX_CHARS} characters]'
         return content
     
 def write(target_dir, content):

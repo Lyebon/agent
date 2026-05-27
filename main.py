@@ -3,7 +3,7 @@ import argparse
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
-
+from config import system_prompt
 
 
 load_dotenv()
@@ -23,7 +23,9 @@ messages: list[types.Content] = [
 ]
 
 response = client.models.generate_content(
-    model='gemini-2.5-flash', contents=messages
+    model='gemini-2.5-flash',
+    contents=messages,
+    config=types.GenerateContentConfig(system_instruction=system_prompt),
 )
 
 
