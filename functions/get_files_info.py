@@ -1,7 +1,71 @@
 import os
 import subprocess
-from agent.config import MAX_CHARS
+from config import MAX_CHARS
+from google.genai import types
 
+schema_get_files_info = types.FunctionDeclaration(
+    name="get_files_info",
+    description="Lists files in a specified directory relative to the working directory, providing file size and directory status",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "directory": types.Schema(
+                type=types.Type.STRING,
+                description="Directory path to list files from, relative to the working directory (default is the working directory itself)",
+            ),
+        },
+    ),
+)
+
+schema_get_files_content = types.FunctionDeclaration(
+    name="get_files_content",
+    description="Read file contents in a specified directory relative to the working directory",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="Directory path to list files from, relative to the working directory (default is the working directory itself)",
+            ),
+        },
+    ),
+)
+
+schema_write_files = types.FunctionDeclaration(
+    name="write_files",
+    description="Write or overwrite files in a specified directory relative to the working directory",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="Directory path to list files from, relative to the working directory (default is the working directory itself)",
+            ),
+            "content": types.Schema(
+                type=types.Type.STRING,
+                description="The content for write or overwrite the files"
+            )
+        },
+    ),
+)
+
+schema_run_python_files = types.FunctionDeclaration(
+    name="run_python_files",
+    description="Execute Python files with optional arguments in a specified directory",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="Directory path to list files from, relative to the working directory (default is the working directory itself)",
+            ),
+            "args": types.Schema(
+                type=types.Type.ARRAY,
+                description="The list of scripts that can we use"
+            )
+        },
+    ),
+)
 
 def get_files_info(working_directory: str, directory: str = ".") -> str:
     try:
@@ -39,7 +103,7 @@ def get_file_content(working_directory: str, file_path: str) -> str:
     except Exception as e:
             return f"Error: {e}"
 
-def write_file(working_directory: str, file_path: str, content: str) -> str:
+def write_files(working_directory: str, file_path: str, content: str) -> str:
         try:
             working_dir_abs = os.path.abspath(working_directory)
             target_dir = os.path.normpath(os.path.join(working_dir_abs, file_path))
@@ -50,7 +114,7 @@ def write_file(working_directory: str, file_path: str, content: str) -> str:
                 return f'Error: Cannot write to "{file_path}" as it is a directory'
             trace = os.path.dirname(target_dir)
             os.makedirs(trace, exist_ok=True)
-            write(target_dir, content)
+            write_file(target_dir, content)
             return f'Successfully wrote to "{file_path}" ({len(content)} characters written)'
         except Exception as e:
             return f"Error: {e}"
@@ -62,7 +126,7 @@ def read_file(target_dir, file_path):
             content += f'[...File "{file_path}" truncated at {MAX_CHARS} characters]'
         return content
     
-def write(target_dir, content):
+def write_file(target_dir, content):
     with open(target_dir, "w") as f:
                 f.write(content)
 

@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 from config import system_prompt
+from functions.call_functions import available_functions
 
 
 load_dotenv()
@@ -25,7 +26,7 @@ messages: list[types.Content] = [
 response = client.models.generate_content(
     model='gemini-2.5-flash',
     contents=messages,
-    config=types.GenerateContentConfig(system_instruction=system_prompt),
+    config=types.GenerateContentConfig(tools=[available_functions], system_instruction=system_prompt),
 )
 
 
@@ -36,8 +37,12 @@ if args.verbose:
     print(
         f"User prompt: {args.user_prompt}\nPrompt tokens: {metadata.prompt_token_count}\nResponse tokens: {metadata.candidates_token_count}"
     )
-
-print(response.text)
+function_calls = response.function_calls
+if function_calls == [] or function_calls != None:
+    for call in function_calls:
+        print(f"Calling function: {call.name}({call.args})")
+else:
+    print(response.text)
 
 def main():
     print("Hello from agent!")
