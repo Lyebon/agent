@@ -17,8 +17,8 @@ schema_get_files_info = types.FunctionDeclaration(
     ),
 )
 
-schema_get_files_content = types.FunctionDeclaration(
-    name="get_files_content",
+schema_get_file_content = types.FunctionDeclaration(
+    name="get_file_content",
     description="Read file contents in a specified directory relative to the working directory",
     parameters=types.Schema(
         type=types.Type.OBJECT,
@@ -49,8 +49,8 @@ schema_write_files = types.FunctionDeclaration(
     ),
 )
 
-schema_run_python_files = types.FunctionDeclaration(
-    name="run_python_files",
+schema_run_python_file = types.FunctionDeclaration(
+    name="run_python_file",
     description="Execute Python files with optional arguments in a specified directory",
     parameters=types.Schema(
         type=types.Type.OBJECT,
@@ -61,9 +61,11 @@ schema_run_python_files = types.FunctionDeclaration(
             ),
             "args": types.Schema(
                 type=types.Type.ARRAY,
+                items=types.Schema(type=types.Type.STRING),
                 description="The list of scripts that can we use"
-            )
+            ),
         },
+        required=["file_path"],
     ),
 )
 
