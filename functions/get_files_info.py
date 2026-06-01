@@ -2,6 +2,14 @@ import os
 import subprocess
 from config import MAX_CHARS
 from google.genai import types
+from collections.abc import Callable
+
+function_map: dict[str, Callable[..., str]] = {
+    "get_file_content": get_file_content,
+    "get_file_info": get_files_info,
+    "write_files": write_file,
+    "run_python_file": run_python_file,
+}
 
 schema_get_files_info = types.FunctionDeclaration(
     name="get_files_info",
