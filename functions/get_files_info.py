@@ -4,13 +4,6 @@ from config import MAX_CHARS
 from google.genai import types
 from collections.abc import Callable
 
-function_map: dict[str, Callable[..., str]] = {
-    "get_file_content": get_file_content,
-    "get_file_info": get_files_info,
-    "write_files": write_file,
-    "run_python_file": run_python_file,
-}
-
 schema_get_files_info = types.FunctionDeclaration(
     name="get_files_info",
     description="Lists files in a specified directory relative to the working directory, providing file size and directory status",
@@ -168,3 +161,11 @@ def run_python_file(
         
     except Exception as e:
         return f"Error: executing Python file: {e}"
+    
+
+function_map: dict[str, Callable[..., str]] = {
+    "get_file_content": get_file_content,
+    "get_files_info": get_files_info,
+    "write_files": write_files,
+    "run_python_file": run_python_file,
+}

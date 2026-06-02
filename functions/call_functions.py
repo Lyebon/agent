@@ -18,7 +18,7 @@ def call_function(
     else:
         print(f" - Calling function: {function_call.name}")
     function_name = function_call.name or ""
-    if function_name == "" or function_name is None:
+    if function_name == "" or function_name not in function_map:
         return types.Content(
             role="tool",
             parts=[

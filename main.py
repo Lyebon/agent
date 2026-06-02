@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 from config import system_prompt
-from functions.call_functions import available_functions
+from functions.call_functions import available_functions, call_function
 
 
 load_dotenv()
@@ -37,10 +37,6 @@ if args.verbose:
     print(
         f"User prompt: {args.user_prompt}\nPrompt tokens: {metadata.prompt_token_count}\nResponse tokens: {metadata.candidates_token_count}"
     )
-function_calls = response.function_calls
-if function_calls == [] or function_calls != None:
-    for call in function_calls:
-        print(f"Calling function: {call.name}({call.args})")
 else:
     print(response.text)
 
