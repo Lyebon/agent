@@ -17,6 +17,7 @@ def call_function(
         print(f"Calling function: {function_call.name}({function_call.args})")
     else:
         print(f" - Calling function: {function_call.name}")
+    
     function_name = function_call.name or ""
     if function_name == "" or function_name not in function_map:
         return types.Content(
@@ -28,9 +29,11 @@ def call_function(
                     )
                 ],
             )
+    
     args = dict(function_call.args) if function_call.args else {}
     args["working_directory"] = "./calculator"
     function_result = function_map[function_name](**args)
+    
     return types.Content(
         role="tool",
         parts=[
